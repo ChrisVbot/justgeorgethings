@@ -18,21 +18,29 @@ const bot = new Twit({
 
 const filePath = './static/georgeQuotes.csv';
 
-const tweetData = fs.createReadStream(filePath)
-    .pipe(csvparse({delimiter: ','}))
-    .on('data', row => {
-        inputText = inputText + ' ' + row[0];
-    })
-    .on('end', (() => {
-        const markov = new rita.RiMarkov(3);
-        markov.loadText(inputText);
-        const sentence = markov.generateSentences(1);
-        bot.post('statuses/update', {status: sentence}, ((err, data, resp) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(`Status tweeted: ${sentence}`);
-            }
+function tweetQuote() {
+    const tweetData = fs.createReadStream(filePath)
+        .pipe(csvparse({delimiter: ','}))
+        .on('data', row => {
+            inputText = inputText + ' ' + row[0];
+        })
+        .on('end', (() => {
+            const markov = new rita.RiMarkov(3);
+            markov.loadText(inputText);
+            const sentence = markov.generateSentences(1);
+            bot.post('statuses/update', {status: sentence}, ((err, data, resp) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(`Status tweeted: ${sentence}`);
+                }
+            }));
         }));
-    }));
+}
+
+setInterval(() => {
+    tweetQuote();
+}, 60*10000);
+
+tweetQuote();
 

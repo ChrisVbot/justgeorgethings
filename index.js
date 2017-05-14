@@ -38,9 +38,5 @@ function tweetQuote() {
         }));
 }
 
-setInterval(() => {
-    tweetQuote();
-}, 60*10000);
-
 tweetQuote();
 

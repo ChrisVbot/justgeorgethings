@@ -35,7 +35,7 @@ function tweetQuote() {
                     console.log(`Status tweeted: ${sentence}`);
                 }
             }));
-        }));
+        });
 }
 
 tweetQuote();

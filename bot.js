@@ -24,7 +24,7 @@ function tweetQuote() {
         .on('data', row => {
             inputText = inputText + ' ' + row[0];
         })
-        .on('end', (() => {
+        .on('end', function() {
             const markov = new rita.RiMarkov(3);
             markov.loadText(inputText);
             const sentence = markov.generateSentences(1);
